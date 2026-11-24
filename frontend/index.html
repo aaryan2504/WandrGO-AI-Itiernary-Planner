@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WandrGo Itinerary Planner — Free AI-powered travel itinerary planner using local LLM. Plan trips, get budgets, day-by-day schedules, and food recommendations.">
+  <title>WandrGo — AI Itinerary Planner</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">W<em>a</em>ndrGo <span class="nav-logo-sub">Itinerary Planner</span></a>
+    <div class="nav-center">
+      <button class="nav-tab active" id="tab-plan" onclick="switchTab('plan')">✦ Plan Trip</button>
+      <button class="nav-tab" id="tab-chat" onclick="switchTab('chat')">✦ AI Assistant</button>
+    </div>
+    <div class="nav-badge">
+      <div class="dot"></div>
+      Powered by Local AI
+    </div>
+  </nav>
+
+  <div class="main-container">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         TAB 1: PLAN TRIP
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-page active" id="page-plan">
+
+      <!-- Hero -->
+      <div class="page-hero">
+        <h1>Plan your next<br><strong>AI-powered adventure</strong></h1>
+        <p>Tell us where you're headed — our AI researches, schedules, budgets,
+           and personalises a complete itinerary just for you.</p>
+      </div>
+
+      <!-- ── Destination & Dates ── -->
+      <div class="form-section">
+        <div class="section-label">✦ Destination & Dates</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Destination</label>
+            <input type="text" id="inp-dest" placeholder="e.g. Kyoto, Japan">
+          </div>
+          <div class="form-group">
+            <label>Starting From</label>
+            <input type="text" id="inp-origin" placeholder="e.g. Mumbai, India">
+          </div>
+        </div>
+        <div class="form-row three-cols">
+          <div class="form-group">
+            <label>📅 Travel Start Date</label>
+            <input type="date" id="inp-date" onclick="openDatePicker(this)" onchange="onStartDateChange()">
+          </div>
+          <div class="form-group">
+            <label>📅 Travel End Date</label>
+            <input type="date" id="inp-end-date" onclick="openDatePicker(this)" onchange="onEndDateChange()">
+          </div>
+          <div class="form-group">
+            <label>Duration (Days)</label>
+            <input type="number" id="inp-days" value="5" min="1" max="30" oninput="onDaysInputChange()">
+          </div>
+        </div>
+        <div class="quick-days-row">
+          <span class="quick-days-label">⚡ Quick Trip Duration:</span>
+          <button type="button" class="quick-day-btn" onclick="setTripDuration(3, this)">Weekend (3d)</button>
+          <button type="button" class="quick-day-btn active" onclick="setTripDuration(5, this)">5 Days</button>
+          <button type="button" class="quick-day-btn" onclick="setTripDuration(7, this)">1 Week (7d)</button>
+          <button type="button" class="quick-day-btn" onclick="setTripDuration(10, this)">10 Days</button>
+          <button type="button" class="quick-day-btn" onclick="setTripDuration(14, this)">2 Weeks (14d)</button>
+        </div>
+      </div>
+
+      <!-- ── Travellers & Budget ── -->
+      <div class="form-section">
+        <div class="section-label">👥 Travellers & Budget</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Number of Travellers</label>
+            <input type="number" id="inp-travellers" value="2" min="1" max="20">
+          </div>
+          <div class="form-group">
+            <label>Budget (INR ₹) Per Person</label>
+            <input type="number" id="inp-budget" value="25000" min="1000" max="5000000" step="1000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Budget Style</label>
+            <select id="inp-budget-style">
+              <option value="budget">🎒 Budget / Backpacker</option>
+              <option value="mid-range" selected>🏨 Mid-Range</option>
+              <option value="luxury">✨ Luxury</option>
+              <option value="ultra-luxury">💎 Ultra Luxury</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Travel Group Type</label>
+            <select id="inp-group">
+              <option value="solo">🧳 Solo</option>
+              <option value="couple" selected>💑 Couple</option>
+              <option value="friends">👯 Friends</option>
+              <option value="family">👨‍👩‍👧 Family</option>
+              <option value="seniors">🧓 Seniors</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Special Interests ── -->
+      <div class="form-section">
+        <div class="section-label">🎯 Special Interests</div>
+        <div class="interests-label">Select your interests (choose all that apply)</div>
+        <div class="interests-grid" id="interests-grid">
+          <div class="interest-chip" data-value="history" onclick="toggleChip(this)">🏛 History & Culture</div>
+          <div class="interest-chip" data-value="adventure" onclick="toggleChip(this)">🧗 Adventure & Outdoors</div>
+          <div class="interest-chip" data-value="food" onclick="toggleChip(this)">🍜 Food & Cuisine</div>
+          <div class="interest-chip" data-value="art" onclick="toggleChip(this)">🎨 Art & Museums</div>
+          <div class="interest-chip" data-value="nature" onclick="toggleChip(this)">🌿 Nature & Wildlife</div>
+          <div class="interest-chip" data-value="shopping" onclick="toggleChip(this)">🛍 Shopping</div>
+          <div class="interest-chip" data-value="nightlife" onclick="toggleChip(this)">🌙 Nightlife & Entertainment</div>
+          <div class="interest-chip" data-value="spiritual" onclick="toggleChip(this)">🕌 Spiritual & Temples</div>
+          <div class="interest-chip" data-value="photography" onclick="toggleChip(this)">📸 Photography</div>
+          <div class="interest-chip" data-value="wellness" onclick="toggleChip(this)">🧘 Wellness & Spa</div>
+          <div class="interest-chip" data-value="beach" onclick="toggleChip(this)">🏖 Beach & Water</div>
+          <div class="interest-chip" data-value="local" onclick="toggleChip(this)">🏘 Local Experiences</div>
+        </div>
+      </div>
+
+      <!-- ── Additional Preferences ── -->
+      <div class="form-section">
+        <div class="section-label">📝 Additional Preferences</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Pace of Travel</label>
+            <select id="inp-pace">
+              <option value="relaxed">😌 Relaxed (2-3 activities/day)</option>
+              <option value="moderate" selected>🚶 Moderate (4-5 activities/day)</option>
+              <option value="packed">⚡ Action-Packed (6+ activities/day)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Accommodation Type</label>
+            <select id="inp-accommodation">
+              <option value="hostel">🛏 Hostel</option>
+              <option value="hotel" selected>🏨 Hotel</option>
+              <option value="airbnb">🏠 Airbnb</option>
+              <option value="resort">🌴 Resort</option>
+              <option value="boutique">✨ Boutique</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group full-width" style="margin-bottom:16px">
+          <label>Dietary Restrictions / Food Preferences</label>
+          <input type="text" id="inp-dietary" placeholder="e.g. vegetarian, no shellfish, gluten-free">
+        </div>
+        <div class="form-group full-width">
+          <label>Any Special Requests or Notes?</label>
+          <textarea id="inp-notes" placeholder="e.g. travelling with a toddler, celebrating anniversary, mobility issues, must-see specific monuments..."></textarea>
+        </div>
+      </div>
+
+      <!-- Generate Button -->
+      <button class="generate-btn" id="btn-generate" onclick="generateItinerary()">
+        ✦ Generate My AI Itinerary
+      </button>
+
+      <!-- Output Area -->
+      <div id="output-area"></div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         TAB 2: AI ASSISTANT
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-page" id="page-chat">
+
+      <!-- Chat Hero -->
+      <div class="chat-hero">
+        <div class="chat-avatar">✦</div>
+        <div>
+          <div class="chat-hero-title">WandrGo AI Assistant</div>
+          <div class="chat-hero-sub">Multi-turn AI · In-context learning · Trip-aware responses</div>
+        </div>
+      </div>
+
+
+
+      <!-- Quick Suggestions -->
+      <div class="quick-label">💡 Quick suggestions:</div>
+      <div class="quick-row">
+        <button class="quick-btn" onclick="sendQuick(this)">What's the best time to visit?</button>
+        <button class="quick-btn" onclick="sendQuick(this)">How do I get around cheaply?</button>
+        <button class="quick-btn" onclick="sendQuick(this)">Hidden gems to visit?</button>
+        <button class="quick-btn" onclick="sendQuick(this)">Best local street food?</button>
+      </div>
+      <div class="quick-row">
+        <button class="quick-btn" onclick="sendQuick(this)">Safety tips for this destination?</button>
+        <button class="quick-btn" onclick="sendQuick(this)">What should I pack?</button>
+        <button class="quick-btn" onclick="sendQuick(this)">Budget saving tips?</button>
+        <button class="quick-btn" onclick="sendQuick(this)">Day trip recommendations?</button>
+      </div>
+
+      <!-- Chat Window -->
+      <div class="chat-window" id="chat-window">
+        <!-- Welcome message injected by JS -->
+      </div>
+
+      <!-- Chat Input -->
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" type="text" placeholder="Ask anything about your trip…"
+               onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="send-btn" id="btn-send" onclick="sendChat()">Send ➤</button>
+      </div>
+    </div>
+
+
+
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

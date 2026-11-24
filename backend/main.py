@@ -1,9 +1,10 @@
 """
 WandrGo Itinerary Planner - FastAPI Backend
-Connects to Ollama (local LLM) for free AI-powered travel planning.
-Compatible with Python 3.7+
+Connects to Ollama (local LLM) or Cloud AI (Gemini / Groq) for free travel planning.
+Compatible with Python 3.7+ and cloud deployment (Render, Railway, etc.)
 """
 
+import os
 import json
 import re
 import httpx
@@ -14,9 +15,15 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-# --- Config ---
-OLLAMA_BASE = "http://localhost:11434"
-MODEL = "qwen2.5:3b"
+# --- Paths ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(BASE_DIR, "..", "frontend")
+
+# --- Config & Providers ---
+OLLAMA_BASE = os.getenv("OLLAMA_BASE", "http://localhost:11434")
+MODEL = os.getenv("MODEL", "qwen2.5:3b")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
 app = FastAPI(title="WandrGo Itinerary Planner", version="1.0.0")
 
@@ -174,16 +181,83 @@ async def ollama_chat(messages, max_tokens=4000, json_mode=False):
     except httpx.ConnectError:
         raise HTTPException(
             status_code=503,
-            detail="Cannot connect to Ollama at localhost:11434. Please start Ollama by running 'ollama serve' in your terminal.",
+            detail="Cannot connect to Ollama at {}. If deploying to cloud (Render), set GEMINI_API_KEY or GROQ_API_KEY environment variable. Locally, run 'ollama serve'.".format(OLLAMA_BASE),
         )
+
+
+async def gemini_chat(messages, max_tokens=4000, json_mode=False) -> str:
+    """Free Cloud API via Google Gemini (ideal for Render deployment)."""
+    parts = []
+    for m in messages:
+        role = m.get("role", "user")
+        content = m.get("content", "")
+        if role == "system":
+            parts.append("System instruction: " + content)
+        else:
+            parts.append(content)
+    full_prompt = "\n\n".join(parts)
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={}".format(GEMINI_API_KEY)
+    payload = {
+        "contents": [{"parts": [{"text": full_prompt}]}],
+        "generationConfig": {
+            "temperature": 0.7,
+            "maxOutputTokens": max_tokens,
+        }
+    }
+    if json_mode:
+        payload["generationConfig"]["responseMimeType"] = "application/json"
+
+    async with httpx.AsyncClient(timeout=120.0) as client:
+        resp = await client.post(url, json=payload)
+        if resp.status_code != 200:
+            raise HTTPException(status_code=502, detail="Gemini API error: {}".format(resp.text))
+        data = resp.json()
+        return data["candidates"][0]["content"]["parts"][0]["text"]
+
+
+async def groq_chat(messages, max_tokens=4000, json_mode=False) -> str:
+    """Free Cloud API via Groq (ultra fast)."""
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    headers = {
+        "Authorization": "Bearer {}".format(GROQ_API_KEY),
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "model": "llama-3.3-70b-versatile",
+        "messages": messages,
+        "max_tokens": max_tokens,
+        "temperature": 0.7,
+    }
+    if json_mode:
+        payload["response_format"] = {"type": "json_object"}
+
+    async with httpx.AsyncClient(timeout=120.0) as client:
+        resp = await client.post(url, headers=headers, json=payload)
+        if resp.status_code != 200:
+            raise HTTPException(status_code=502, detail="Groq API error: {}".format(resp.text))
+        return resp.json()["choices"][0]["message"]["content"]
+
+
+async def ai_chat(messages, max_tokens=4000, json_mode=False) -> str:
+    """Unified router: uses Gemini or Groq cloud API if configured, otherwise local Ollama."""
+    if GEMINI_API_KEY:
+        return await gemini_chat(messages, max_tokens=max_tokens, json_mode=json_mode)
+    elif GROQ_API_KEY:
+        return await groq_chat(messages, max_tokens=max_tokens, json_mode=json_mode)
+    else:
+        return await ollama_chat(messages, max_tokens=max_tokens, json_mode=json_mode)
 
 
 # --- API Routes ---
 @app.get("/api/health")
 async def health():
-    """Check if Ollama is running and model is available."""
+    """Check AI engine readiness."""
+    if GEMINI_API_KEY:
+        return {"status": "ok", "provider": "Google Gemini", "model": "gemini-1.5-flash", "model_ready": True}
+    if GROQ_API_KEY:
+        return {"status": "ok", "provider": "Groq", "model": "llama-3.3-70b-versatile", "model_ready": True}
     try:
-        async with httpx.AsyncClient(timeout=5.0) as client:
+        async with httpx.AsyncClient(timeout=4.0) as client:
             resp = await client.get("{}/api/tags".format(OLLAMA_BASE))
             if resp.status_code == 200:
                 models = [m["name"] for m in resp.json().get("models", [])]
@@ -336,7 +410,7 @@ CRITICAL INSTRUCTIONS:
     token_limit = min(2000 + params.days * 1500, 16000)
 
     try:
-        raw = await ollama_chat(messages, max_tokens=token_limit, json_mode=True)
+        raw = await ai_chat(messages, max_tokens=token_limit, json_mode=True)
         itinerary = extract_json(raw)
 
         # Helper to sanitize currency strings to INR (₹)
@@ -442,7 +516,7 @@ async def chat(req: ChatRequest):
     messages = [{"role": "system", "content": system}] + chat_histories[session][-10:]
 
     try:
-        reply = await ollama_chat(messages, max_tokens=800)
+        reply = await ai_chat(messages, max_tokens=800)
         chat_histories[session].append({"role": "assistant", "content": reply})
         return {"success": True, "reply": reply}
     except Exception as e:
@@ -450,9 +524,9 @@ async def chat(req: ChatRequest):
 
 
 # --- Serve Frontend ---
-app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 
 @app.get("/")
 async def serve_index():
-    return FileResponse("../frontend/index.html")
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))

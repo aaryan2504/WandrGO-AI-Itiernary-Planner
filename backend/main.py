@@ -196,7 +196,7 @@ async def gemini_chat(messages, max_tokens=4000, json_mode=False) -> str:
         else:
             parts.append(content)
     full_prompt = "\n\n".join(parts)
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={}".format(GEMINI_API_KEY)
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key={}".format(GEMINI_API_KEY)
     payload = {
         "contents": [{"parts": [{"text": full_prompt}]}],
         "generationConfig": {
@@ -253,7 +253,7 @@ async def ai_chat(messages, max_tokens=4000, json_mode=False) -> str:
 async def health():
     """Check AI engine readiness."""
     if GEMINI_API_KEY:
-        return {"status": "ok", "provider": "Google Gemini", "model": "gemini-1.5-flash", "model_ready": True}
+        return {"status": "ok", "provider": "Google Gemini", "model": "gemini-3.5-flash-lite", "model_ready": True}
     if GROQ_API_KEY:
         return {"status": "ok", "provider": "Groq", "model": "llama-3.3-70b-versatile", "model_ready": True}
     try:

@@ -242,6 +242,11 @@ async function generateItinerary() {
 
     if (res.ok && data.success) {
       currentItinerary = data.itinerary;
+      trackEvent('generate_itinerary', {
+        destination: params.destination,
+        trip_days: params.days,
+        budget_style: params.budget_style,
+      });
       outputArea.innerHTML = `<div class="status-msg success">✅ Itinerary successfully generated in ${elapsed}s! See your trip below.</div>`;
       outputArea.innerHTML += renderItinerary(data.itinerary, params);
       outputArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -554,6 +559,9 @@ async function sendChat() {
     if (thinking) thinking.remove();
 
     if (data.success) {
+      trackEvent('ai_chat_message', {
+        has_itinerary_context: Boolean(currentItinerary),
+      });
       win.innerHTML += renderMsg('ai', data.reply);
     } else {
       win.innerHTML += renderMsg('ai', `Sorry, something went wrong: ${data.detail || 'Unknown error'}`);
@@ -569,6 +577,13 @@ async function sendChat() {
 }
 
 
+/* ─── Analytics Helper ────────────────────────────────────────────────────── */
+function trackEvent(eventName, eventParams) {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', eventName, eventParams || {});
+  }
+}
+
 /* ─── Utility ─────────────────────────────────────────────────────────────── */
 function esc(str) {
   if (!str) return '';
@@ -583,16 +598,23 @@ document.addEventListener('DOMContentLoaded', () => {
   initChat();
   initDatePickers();
 
-  // Check Ollama health on load
+  // Check AI provider readiness on load
   fetch(API + '/api/health')
     .then(r => r.json())
     .then(data => {
+      const badgeEl = document.querySelector('.nav-badge');
+      if (data.status === 'ok' && data.provider) {
+        if (badgeEl) {
+          badgeEl.innerHTML = `<div class="dot"></div> Powered by ${esc(data.provider)}`;
+        }
+        return;
+      }
       if (!data.ollama) {
         document.getElementById('output-area').innerHTML =
-          `<div class="status-msg error">⚠ Ollama is not running. Start it with <code>ollama serve</code></div>`;
+          `<div class="status-msg error">⚠ Ollama is not running. Start it with <code>ollama serve</code> or configure GEMINI_API_KEY / GROQ_API_KEY.</div>`;
       } else if (!data.model_ready) {
         document.getElementById('output-area').innerHTML =
-          `<div class="status-msg error">⚠ Model not found. Pull it with <code>ollama pull ${data.model}</code></div>`;
+          `<div class="status-msg error">⚠ Model not found. Pull it with <code>ollama pull ${esc(data.model)}</code></div>`;
       }
     })
     .catch(() => {});

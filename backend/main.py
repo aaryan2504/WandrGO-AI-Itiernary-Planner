@@ -7,32 +7,110 @@ Compatible with Python 3.7+ and cloud deployment (Render, Railway, etc.)
 import os
 import json
 import re
+import html as html_lib
 import httpx
 from typing import Optional, List, Dict, Any
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import HTMLResponse, Response, RedirectResponse
 from pydantic import BaseModel
 
 # --- Paths ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, "..", "frontend")
+SEO_CONFIG_PATH = os.path.join(BASE_DIR, "seo_config.json")
 
 # --- Config & Providers ---
 OLLAMA_BASE = os.getenv("OLLAMA_BASE", "http://localhost:11434")
 MODEL = os.getenv("MODEL", "qwen2.5:3b")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+DEFAULT_SITE_URL = "https://wandrgo-ai-itiernary-planner-1.onrender.com"
 
-app = FastAPI(title="WandrGo Itinerary Planner", version="1.0.0")
+app = FastAPI(title="WandrGo Itinerary Planner", version="1.1.0")
 
+app.add_middleware(GZipMiddleware, minimum_size=500)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def add_security_and_cache_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    if request.url.path.startswith("/static/"):
+        response.headers.setdefault("Cache-Control", "public, max-age=604800")
+    return response
+
+
+def get_seo_config() -> Dict[str, str]:
+    """Load SEO / analytics settings from env vars or backend/seo_config.json."""
+    file_cfg = {}
+    if os.path.exists(SEO_CONFIG_PATH):
+        try:
+            with open(SEO_CONFIG_PATH, "r", encoding="utf-8") as f:
+                file_cfg = json.load(f)
+        except Exception:
+            file_cfg = {}
+
+    def pick(key, default=""):
+        val = os.getenv(key)
+        if val is not None and val.strip() != "":
+            return val.strip()
+        return str(file_cfg.get(key, default)).strip()
+
+    return {
+        "SITE_URL": pick("SITE_URL", DEFAULT_SITE_URL).rstrip("/"),
+        "GA4_MEASUREMENT_ID": pick("GA4_MEASUREMENT_ID", ""),
+        "GSC_META_TAG": pick("GSC_META_TAG", ""),
+        "GSC_HTML_FILENAME": pick("GSC_HTML_FILENAME", ""),
+        "GSC_HTML_CONTENT": pick("GSC_HTML_CONTENT", ""),
+    }
+
+
+def render_seo_html(filename: str) -> HTMLResponse:
+    """Serve an HTML template with canonical base URL, optional GA4, and optional GSC tag."""
+    path = os.path.join(FRONTEND_DIR, filename)
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Page not found")
+    with open(path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    cfg = get_seo_config()
+    content = content.replace("__SITE_URL__", cfg["SITE_URL"])
+
+    head_injections = []
+    gsc_meta = cfg["GSC_META_TAG"]
+    if gsc_meta:
+        if gsc_meta.lower().startswith("<meta"):
+            head_injections.append(gsc_meta)
+        else:
+            head_injections.append(
+                '<meta name="google-site-verification" content="{}">'.format(html_lib.escape(gsc_meta))
+            )
+
+    ga_id = cfg["GA4_MEASUREMENT_ID"]
+    if ga_id:
+        safe_ga = html_lib.escape(ga_id)
+        head_injections.append(
+            '<script async src="https://www.googletagmanager.com/gtag/js?id={id}"></script>\n'
+            '<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}'
+            'gtag("js",new Date());gtag("config","{id}");</script>'.format(id=safe_ga)
+        )
+
+    if head_injections:
+        snippet = "\n  ".join(head_injections) + "\n</head>"
+        content = content.replace("</head>", snippet, 1)
+
+    return HTMLResponse(content=content)
 
 # --- In-memory state ---
 chat_histories = {}  # type: Dict[str, List]
@@ -523,10 +601,96 @@ async def chat(req: ChatRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# --- Serve Frontend ---
+# --- Serve Frontend & SEO Routes ---
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 
 @app.get("/")
 async def serve_index():
-    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+    return render_seo_html("index.html")
+
+
+@app.get("/about-us")
+async def redirect_about_us():
+    return RedirectResponse(url="/about-us/", status_code=301)
+
+
+@app.get("/about-us/")
+async def serve_about_us():
+    return render_seo_html("about-us.html")
+
+
+@app.get("/blog")
+async def redirect_blog():
+    return RedirectResponse(url="/blog/", status_code=301)
+
+
+@app.get("/blog/")
+async def serve_blog():
+    return render_seo_html("blog.html")
+
+
+@app.get("/ai-travel-itinerary-planner-guide")
+async def redirect_guide():
+    return RedirectResponse(url="/ai-travel-itinerary-planner-guide/", status_code=301)
+
+
+@app.get("/blog/ai-travel-itinerary-planner-guide")
+@app.get("/blog/ai-travel-itinerary-planner-guide/")
+async def redirect_blog_guide():
+    return RedirectResponse(url="/ai-travel-itinerary-planner-guide/", status_code=301)
+
+
+@app.get("/ai-travel-itinerary-planner-guide/")
+async def serve_blog_post():
+    return render_seo_html("blog-post.html")
+
+
+@app.get("/sitemap.xml")
+async def serve_sitemap():
+    site_url = get_seo_config()["SITE_URL"]
+    urls = [
+        ("/", "2026-11-26", "weekly", "1.0"),
+        ("/about-us/", "2026-11-26", "monthly", "0.8"),
+        ("/blog/", "2026-11-26", "weekly", "0.8"),
+        ("/ai-travel-itinerary-planner-guide/", "2026-11-26", "monthly", "0.9"),
+    ]
+    items = []
+    for path, lastmod, freq, prio in urls:
+        items.append(
+            "  <url>\n"
+            "    <loc>{base}{path}</loc>\n"
+            "    <lastmod>{lastmod}</lastmod>\n"
+            "    <changefreq>{freq}</changefreq>\n"
+            "    <priority>{prio}</priority>\n"
+            "  </url>".format(base=site_url, path=path, lastmod=lastmod, freq=freq, prio=prio)
+        )
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(items)
+        + "\n</urlset>\n"
+    )
+    return Response(content=xml, media_type="application/xml")
+
+
+@app.get("/robots.txt")
+async def serve_robots():
+    site_url = get_seo_config()["SITE_URL"]
+    txt = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /api/\n\n"
+        "Sitemap: {}/sitemap.xml\n".format(site_url)
+    )
+    return Response(content=txt, media_type="text/plain")
+
+
+@app.get("/{gsc_filename}")
+async def serve_gsc_verification(gsc_filename: str):
+    cfg = get_seo_config()
+    expected = cfg["GSC_HTML_FILENAME"]
+    if expected and gsc_filename == expected:
+        body = cfg["GSC_HTML_CONTENT"] or ("google-site-verification: " + expected)
+        return Response(content=body, media_type="text/html")
+    raise HTTPException(status_code=404, detail="Not found")

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/"
+>
+<channel>
+	<title>WandrGo AI Travel Itinerary Planner</title>
+	<link>https://wandrgo-ai-itiernary-planner-1.onrender.com</link>
+	<description>Free AI travel itinerary planner with INR budgets and day-by-day trip schedules</description>
+	<pubDate>Thu, 26 Nov 2026 18:00:00 +0000</pubDate>
+	<language>en-US</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_site_url>https://wandrgo-ai-itiernary-planner-1.onrender.com</wp:base_site_url>
+	<wp:base_blog_url>https://wandrgo-ai-itiernary-planner-1.onrender.com</wp:base_blog_url>
+
+	<wp:author>
+		<wp:author_id>1</wp:author_id>
+		<wp:author_login><![CDATA[admin]]></wp:author_login>
+		<wp:author_email><![CDATA[team@wandrgo.local]]></wp:author_email>
+		<wp:author_display_name><![CDATA[WandrGo Editorial Team]]></wp:author_display_name>
+	</wp:author>
+
+	<wp:category>
+		<wp:term_id>2</wp:term_id>
+		<wp:category_nicename><![CDATA[ai-travel-guides]]></wp:category_nicename>
+		<wp:category_parent><![CDATA[]]></wp:category_parent>
+		<wp:cat_name><![CDATA[AI Travel Guides]]></wp:cat_name>
+	</wp:category>
+
+	<!-- PAGE 1: Home -->
+	<item>
+		<title><![CDATA[Home]]></title>
+		<link>https://wandrgo-ai-itiernary-planner-1.onrender.com/</link>
+		<pubDate>Thu, 26 Nov 2026 10:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">https://wandrgo-ai-itiernary-planner-1.onrender.com/?page_id=101</guid>
+		<description></description>
+		<content:encoded><![CDATA[<h2>Smarter Trip Planning in Seconds</h2>
+<p>WandrGo is a free <strong>AI travel itinerary planner</strong> designed to turn destination ideas into organized, day-by-day travel schedules with realistic Indian Rupee (INR) cost breakdowns. Specify your origin, travel dates, group size, dietary needs, and travel pace to receive unique daily attractions and restaurant recommendations with zero repeated landmarks.</p>
+<h3>Frequently Asked Questions</h3>
+<p><strong>Is WandrGo free to use?</strong> Yes. WandrGo runs on free cloud generative AI models and local LLMs so every traveller can build personalized itineraries without paywalls.</p>
+<p><strong>How are daily budgets calculated?</strong> Every itinerary breaks costs into flights, stays, food, local transport, activities, and miscellaneous buffer in INR (&#8377;).</p>]]></content:encoded>
+		<excerpt:encoded><![CDATA[Free AI travel itinerary planner with day-by-day schedules and INR budgets.]]></excerpt:encoded>
+		<wp:post_id>101</wp:post_id>
+		<wp:post_date><![CDATA[2026-11-26 10:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-11-26 10:00:00]]></wp:post_date_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[home]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>1</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+
+	<!-- PAGE 2: About Us -->
+	<item>
+		<title><![CDATA[About Us]]></title>
+		<link>https://wandrgo-ai-itiernary-planner-1.onrender.com/about-us/</link>
+		<pubDate>Thu, 26 Nov 2026 10:15:00 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">https://wandrgo-ai-itiernary-planner-1.onrender.com/?page_id=102</guid>
+		<description></description>
+		<content:encoded><![CDATA[<h2>Our Mission: Stress-Free, Transparent Trip Planning</h2>
+<p>Most travellers spend days comparing blogs, spreadsheets, maps, and currency converters before finalizing a single route. The <strong>WandrGo AI travel planner</strong> eliminates that friction by translating your exact destination, travel dates, group profile, dietary preferences, and budget into a structured day-by-day schedule.</p>
+<p>Whether you are planning a weekend getaway to Jaipur, a five-day cultural exploration in Kyoto, or a two-week family holiday across Kerala, WandrGo organizes morning-to-evening activities, transit notes, visa complexity indicators, and local dining spots without repeating places across days.</p>
+
+<h2>How Our Technology Works</h2>
+<p>WandrGo combines a fast Python and FastAPI inference service with structured zero-shot prompt engineering. Rather than outputting unstructured walls of text, our engine enforces a strict JSON schema and a multi-stage deduplication pipeline so every generated itinerary is clean, readable, and ready for real travel.</p>
+
+<div class="seo-grid two-cols">
+	<div class="seo-card">
+		<h3>Built for Indian &amp; Global Travellers</h3>
+		<p>All cost estimates default to Indian Rupees (INR / &#8377;) with separate breakdowns for flights, stays, local transport, meals, and activities.</p>
+	</div>
+	<div class="seo-card">
+		<h3>Trip-Aware Multi-Turn Assistant</h3>
+		<p>Your generated itinerary feeds directly into our conversational AI Assistant so follow-up advice reflects your exact destination, trip duration, and daily budget.</p>
+	</div>
+</div>
+
+<h2>Why Search Clarity &amp; Accessibility Matter to Us</h2>
+<p>Helpful travel software only reaches travellers when it loads rapidly on mobile connections and follows search best practices. WandrGo prioritizes semantic HTML, compressed WebP graphics, clean permalinks, and valid Schema.org markup. Read our <a href="/ai-travel-itinerary-planner-guide/">complete guide to planning a trip with AI</a> or return to the <a href="/">WandrGo homepage</a> to launch the planner.</p>]]></content:encoded>
+		<excerpt:encoded><![CDATA[Learn about WandrGo AI travel planner, our mission, and our structured trip planning architecture.]]></excerpt:encoded>
+		<wp:post_id>102</wp:post_id>
+		<wp:post_date><![CDATA[2026-11-26 10:15:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-11-26 10:15:00]]></wp:post_date_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[about-us]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>2</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+
+	<!-- PAGE 3: Blog Index -->
+	<item>
+		<title><![CDATA[Blog]]></title>
+		<link>https://wandrgo-ai-itiernary-planner-1.onrender.com/blog/</link>
+		<pubDate>Thu, 26 Nov 2026 10:20:00 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">https://wandrgo-ai-itiernary-planner-1.onrender.com/?page_id=103</guid>
+		<description></description>
+		<content:encoded><![CDATA[<p>Practical guides on AI travel itinerary planning, INR trip budgeting, and modern destination research.</p>]]></content:encoded>
+		<excerpt:encoded><![CDATA[WandrGo Travel Blog]]></excerpt:encoded>
+		<wp:post_id>103</wp:post_id>
+		<wp:post_date><![CDATA[2026-11-26 10:20:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-11-26 10:20:00]]></wp:post_date_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[blog]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>3</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+
+	<!-- POST 1: In-Depth SEO Blog Article -->
+	<item>
+		<title><![CDATA[How to Plan a Trip with AI: Complete Itinerary & Budget Guide (2026)]]></title>
+		<link>https://wandrgo-ai-itiernary-planner-1.onrender.com/ai-travel-itinerary-planner-guide/</link>
+		<pubDate>Fri, 20 Nov 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">https://wandrgo-ai-itiernary-planner-1.onrender.com/?p=201</guid>
+		<description></description>
+		<content:encoded><![CDATA[<p>Global travel demand has surged past pre-pandemic levels, making destination research more competitive and time-consuming than ever. According to the <a href="https://www.unwto.org/world-tourism-barometer" target="_blank" rel="noopener">UN Tourism World Tourism Barometer</a>, international tourist arrivals reached 1.4 billion in 2024 and climbed further in 2025. With millions of travellers searching for flights, hotels, and local experiences simultaneously, learning <strong>how to plan a trip with AI</strong> is one of the fastest ways to build an organized itinerary without drowning in dozens of open browser tabs.</p>
+
+<p>However, simply typing "plan a 5-day trip to Kyoto" into a generic chatbot rarely gives you a ready-to-travel schedule. Generic prompts often repeat popular attractions across multiple days, mix currencies, or ignore travel pace and dietary restrictions. In this guide, you will learn how structured AI planning works—and how you can apply it immediately inside the <a href="/">WandrGo AI travel itinerary planner</a>.</p>
+
+<h2>Why Traditional Trip Planning Breaks Down</h2>
+<p>Manual trip planning usually spans four disconnected tools: blog posts for inspiration, spreadsheets for cost tracking, map apps for neighbourhood clustering, and booking sites for seasonal pricing. When one variable shifts—such as cutting a seven-day vacation down to five days or switching from a solo trip to a family holiday—every downstream detail must be recalculated by hand.</p>
+
+<p>An effective AI itinerary workflow solves this by treating your trip as a constrained optimization problem. Instead of collecting random lists of "top 10 things to do," you provide structured inputs upfront and let the model balance logistics, budget, and personal interests in a single pass.</p>
+
+<h2>Step 1: Define Your Core Trip Constraints Upfront</h2>
+<p>Before generating a schedule, gather the six parameters that shape every realistic travel plan:</p>
+<ul>
+	<li><strong>Origin and Destination:</strong> Naming your departure city lets the planner estimate realistic flight or rail costs alongside local transit.</li>
+	<li><strong>Exact Duration and Travel Dates:</strong> Seasonal weather, local festivals, and monsoon windows dramatically change which neighbourhoods and outdoor activities make sense.</li>
+	<li><strong>Traveller Count and Group Type:</strong> A solo backpacker itinerary moves at a very different rhythm from a senior-friendly or toddler-friendly family schedule.</li>
+	<li><strong>Per-Person Budget and Style (INR):</strong> Setting a clear INR ceiling (e.g., &#8377;25,000 mid-range vs. &#8377;80,000 luxury) anchors hotel tiers, dining spots, and paid excursions.</li>
+	<li><strong>Travel Pace:</strong> Choose between relaxed (2–3 activities per day), moderate (4–5 activities), or action-packed (6+ stops) to avoid itinerary fatigue.</li>
+	<li><strong>Dietary and Accessibility Notes:</strong> Specifying vegetarian, vegan, gluten-free, or low-walking preferences upfront keeps restaurant and attraction picks genuinely usable.</li>
+</ul>
+
+<h2>Step 2: Use Structured JSON &amp; Zero-Duplication Rules</h2>
+<p>One of the biggest flaws in naive AI travel outputs is landmark repetition. A language model might schedule a major museum on Day 1 morning and accidentally recommend the same neighbourhood market again on Day 3. To prevent that, modern planners pair zero-shot system instructions with deterministic post-processing.</p>
+
+<p>Inside our <a href="/about-us/">WandrGo platform architecture</a>, every generated trip follows a strict JSON schema covering research complexity, visa notes, daily activities, three distinct meal recommendations per day, and a non-overlapping "Places to Visit" bonus list. A deduplication pass normalizes activity names across every day so no landmark or restaurant appears twice.</p>
+
+<h2>Step 3: Build a Realistic INR Budget Breakdown</h2>
+<p>Many international travel blogs quote prices exclusively in US Dollars or Euros, forcing Indian travellers to mentally convert every museum ticket and street-food meal. When you plan a trip with AI, request a categorized Indian Rupee (INR / &#8377;) breakdown split across six buckets:</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Budget Category</th>
+			<th>What It Covers</th>
+			<th>Typical Mid-Range Share</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Flights / Intercity Transit</td>
+			<td>Round-trip airfare or express train tickets from origin</td>
+			<td>25% – 35%</td>
+		</tr>
+		<tr>
+			<td>Accommodation</td>
+			<td>Hotels, boutique stays, hostels, or family resorts</td>
+			<td>25% – 35%</td>
+		</tr>
+		<tr>
+			<td>Food &amp; Dining</td>
+			<td>Breakfast, lunch, dinner, cafes, and local street food</td>
+			<td>15% – 20%</td>
+		</tr>
+		<tr>
+			<td>Local Transport</td>
+			<td>Metro passes, auto-rickshaws, cabs, and day-trip shuttles</td>
+			<td>8% – 12%</td>
+		</tr>
+		<tr>
+			<td>Activities &amp; Tickets</td>
+			<td>Monuments, guided tours, museums, and park passes</td>
+			<td>10% – 15%</td>
+		</tr>
+		<tr>
+			<td>Buffer &amp; Miscellaneous</td>
+			<td>SIM cards, tipping, souvenirs, and contingency funds</td>
+			<td>5% – 10%</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Step 4: Refine Your Plan with Context-Aware AI Chat</h2>
+<p>Even a great first-draft itinerary benefits from quick iteration. Maybe you want to swap an outdoor hike for an indoor art gallery if rain is forecast, or adjust Day 2 for a late-night flight arrival. Instead of starting over from scratch, feed your generated itinerary directly into a trip-aware chat assistant. Because the assistant already knows your destination, trip length, and daily average INR budget, follow-up answers stay grounded in your actual schedule.</p>
+
+<h2>Step 5: How Travel Websites &amp; Guides Stay Discoverable in Search</h2>
+<p>Whether you are building an AI trip-planning tool or publishing regional travel guides, technical quality determines whether travellers can actually find your resources on Google. Clean URL permalinks, fast mobile Core Web Vitals, valid Schema.org structured data, and authoritative internal linking all signal relevance to search engines. Teams researching keyword visibility, site audits, and technical ranking factors often rely on <a href="https://seonalabs.com/" target="_blank" rel="noopener">curated SEO and search tools</a> to benchmark crawlability, page speed, and on-page optimization alongside analytics platforms like Google Search Console and GA4.</p>
+
+<h2>Common Mistakes to Avoid When Planning Trips with AI</h2>
+<ol>
+	<li><strong>Overstuffing Daily Schedules:</strong> Packing seven attractions into a single day ignores traffic and transit wait times. Keep moderate days to 3–4 well-clustered stops.</li>
+	<li><strong>Skipping Visa &amp; Seasonality Checks:</strong> Always verify entry rules, public holidays, and off-season closures directly with official tourism boards before booking non-refundable tickets.</li>
+	<li><strong>Ignoring Neighbourhood Geography:</strong> Group morning, afternoon, and evening stops within the same district so you spend hours exploring rather than sitting in transit.</li>
+	<li><strong>Forgetting Currency &amp; Tipping Norms:</strong> Confirm whether local markets prefer cash or UPI/card payments before arriving.</li>
+</ol>
+
+<h2>Frequently Asked Questions</h2>
+<h3>Can AI plan a complete multi-day trip within a fixed INR budget?</h3>
+<p>Yes. By specifying your per-person budget in INR and choosing a budget tier (such as backpacker, mid-range, or luxury), an AI itinerary planner allocates realistic daily estimates across stays, meals, transport, and entry tickets.</p>
+<h3>How do I avoid repeated places in an AI-generated itinerary?</h3>
+<p>Use a dedicated planner with built-in activity deduplication, or explicitly instruct the model to track previously scheduled landmarks and keep every day's attractions and restaurants 100% unique.</p>]]></content:encoded>
+		<excerpt:encoded><![CDATA[Learn how to plan a trip with AI step by step, including structured prompts, INR budget breakdowns, zero-duplicate schedules, and search visibility tips.]]></excerpt:encoded>
+		<wp:post_id>201</wp:post_id>
+		<wp:post_date><![CDATA[2026-11-20 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-11-20 09:00:00]]></wp:post_date_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[open]]></wp:ping_status>
+		<wp:post_name><![CDATA[ai-travel-itinerary-planner-guide]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<category domain="category" nicename="ai-travel-guides"><![CDATA[AI Travel Guides]]></category>
+	</item>
+</channel>
+</rss>

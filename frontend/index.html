@@ -3,26 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="WandrGo Itinerary Planner — Free AI-powered travel itinerary planner using local LLM. Plan trips, get budgets, day-by-day schedules, and food recommendations.">
-  <title>WandrGo — AI Itinerary Planner</title>
+  <title>WandrGo — Free AI Travel Itinerary Planner &amp; Trip Budgeter</title>
+  <meta name="description" content="Plan personalized day-by-day trips in seconds with WandrGo, a free AI travel itinerary planner with INR budget estimates, local food guides, and AI chat.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="__SITE_URL__/">
+
+  <!-- OpenGraph & Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WandrGo">
+  <meta property="og:title" content="WandrGo — Free AI Travel Itinerary Planner &amp; Trip Budgeter">
+  <meta property="og:description" content="Create complete day-by-day travel itineraries, realistic INR budget breakdowns, and personalized food recommendations with WandrGo AI.">
+  <meta property="og:url" content="__SITE_URL__/">
+  <meta property="og:image" content="__SITE_URL__/static/images/og-banner.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WandrGo — Free AI Travel Itinerary Planner">
+  <meta name="twitter:description" content="Free AI travel itinerary planner with INR budgets, zero duplicate activities, and context-aware AI chat.">
+  <meta name="twitter:image" content="__SITE_URL__/static/images/og-banner.png">
+
+  <!-- Non-blocking Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="/static/style.css">
+
+  <!-- Schema.org JSON-LD: Organization & WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "__SITE_URL__/#organization",
+        "name": "WandrGo",
+        "url": "__SITE_URL__/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "__SITE_URL__/static/images/og-banner.png"
+        },
+        "description": "WandrGo is a free AI travel itinerary planner offering day-by-day schedules, INR trip budgets, and personalized travel chat."
+      },
+      {
+        "@type": "WebSite",
+        "@id": "__SITE_URL__/#website",
+        "url": "__SITE_URL__/",
+        "name": "WandrGo AI Travel Itinerary Planner",
+        "publisher": {
+          "@id": "__SITE_URL__/#organization"
+        },
+        "inLanguage": "en"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
   <!-- ═══ NAVBAR ═══ -->
-  <nav class="navbar" id="navbar">
+  <nav class="navbar" id="navbar" aria-label="Primary Navigation">
     <a href="/" class="nav-logo">W<em>a</em>ndrGo <span class="nav-logo-sub">Itinerary Planner</span></a>
     <div class="nav-center">
-      <button class="nav-tab active" id="tab-plan" onclick="switchTab('plan')">✦ Plan Trip</button>
-      <button class="nav-tab" id="tab-chat" onclick="switchTab('chat')">✦ AI Assistant</button>
+      <button type="button" class="nav-tab active" id="tab-plan" onclick="switchTab('plan')">✦ Plan Trip</button>
+      <button type="button" class="nav-tab" id="tab-chat" onclick="switchTab('chat')">✦ AI Assistant</button>
+      <a href="/about-us/" class="nav-link">About Us</a>
+      <a href="/blog/" class="nav-link">Blog</a>
     </div>
     <div class="nav-badge">
       <div class="dot"></div>
-      Powered by Local AI
+      Powered by AI
     </div>
   </nav>
 
-  <div class="main-container">
+  <main class="main-container">
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          TAB 1: PLAN TRIP
@@ -30,36 +81,36 @@
     <div class="tab-page active" id="page-plan">
 
       <!-- Hero -->
-      <div class="page-hero">
+      <header class="page-hero">
         <h1>Plan your next<br><strong>AI-powered adventure</strong></h1>
-        <p>Tell us where you're headed — our AI researches, schedules, budgets,
-           and personalises a complete itinerary just for you.</p>
-      </div>
+        <p>Tell us where you're headed — our AI travel itinerary planner researches, schedules,
+           estimates INR budgets, and personalises a complete trip just for you.</p>
+      </header>
 
       <!-- ── Destination & Dates ── -->
-      <div class="form-section">
-        <div class="section-label">✦ Destination & Dates</div>
+      <section class="form-section" aria-label="Destination and Dates">
+        <div class="section-label">✦ Destination &amp; Dates</div>
         <div class="form-row">
           <div class="form-group">
-            <label>Destination</label>
+            <label for="inp-dest">Destination</label>
             <input type="text" id="inp-dest" placeholder="e.g. Kyoto, Japan">
           </div>
           <div class="form-group">
-            <label>Starting From</label>
+            <label for="inp-origin">Starting From</label>
             <input type="text" id="inp-origin" placeholder="e.g. Mumbai, India">
           </div>
         </div>
         <div class="form-row three-cols">
           <div class="form-group">
-            <label>📅 Travel Start Date</label>
+            <label for="inp-date">📅 Travel Start Date</label>
             <input type="date" id="inp-date" onclick="openDatePicker(this)" onchange="onStartDateChange()">
           </div>
           <div class="form-group">
-            <label>📅 Travel End Date</label>
+            <label for="inp-end-date">📅 Travel End Date</label>
             <input type="date" id="inp-end-date" onclick="openDatePicker(this)" onchange="onEndDateChange()">
           </div>
           <div class="form-group">
-            <label>Duration (Days)</label>
+            <label for="inp-days">Duration (Days)</label>
             <input type="number" id="inp-days" value="5" min="1" max="30" oninput="onDaysInputChange()">
           </div>
         </div>
@@ -71,24 +122,24 @@
           <button type="button" class="quick-day-btn" onclick="setTripDuration(10, this)">10 Days</button>
           <button type="button" class="quick-day-btn" onclick="setTripDuration(14, this)">2 Weeks (14d)</button>
         </div>
-      </div>
+      </section>
 
       <!-- ── Travellers & Budget ── -->
-      <div class="form-section">
-        <div class="section-label">👥 Travellers & Budget</div>
+      <section class="form-section" aria-label="Travellers and Budget">
+        <div class="section-label">👥 Travellers &amp; Budget</div>
         <div class="form-row">
           <div class="form-group">
-            <label>Number of Travellers</label>
+            <label for="inp-travellers">Number of Travellers</label>
             <input type="number" id="inp-travellers" value="2" min="1" max="20">
           </div>
           <div class="form-group">
-            <label>Budget (INR ₹) Per Person</label>
+            <label for="inp-budget">Budget (INR ₹) Per Person</label>
             <input type="number" id="inp-budget" value="25000" min="1000" max="5000000" step="1000">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Budget Style</label>
+            <label for="inp-budget-style">Budget Style</label>
             <select id="inp-budget-style">
               <option value="budget">🎒 Budget / Backpacker</option>
               <option value="mid-range" selected>🏨 Mid-Range</option>
@@ -97,7 +148,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Travel Group Type</label>
+            <label for="inp-group">Travel Group Type</label>
             <select id="inp-group">
               <option value="solo">🧳 Solo</option>
               <option value="couple" selected>💑 Couple</option>
@@ -107,34 +158,34 @@
             </select>
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- ── Special Interests ── -->
-      <div class="form-section">
+      <section class="form-section" aria-label="Special Interests">
         <div class="section-label">🎯 Special Interests</div>
         <div class="interests-label">Select your interests (choose all that apply)</div>
         <div class="interests-grid" id="interests-grid">
-          <div class="interest-chip" data-value="history" onclick="toggleChip(this)">🏛 History & Culture</div>
-          <div class="interest-chip" data-value="adventure" onclick="toggleChip(this)">🧗 Adventure & Outdoors</div>
-          <div class="interest-chip" data-value="food" onclick="toggleChip(this)">🍜 Food & Cuisine</div>
-          <div class="interest-chip" data-value="art" onclick="toggleChip(this)">🎨 Art & Museums</div>
-          <div class="interest-chip" data-value="nature" onclick="toggleChip(this)">🌿 Nature & Wildlife</div>
+          <div class="interest-chip" data-value="history" onclick="toggleChip(this)">🏛 History &amp; Culture</div>
+          <div class="interest-chip" data-value="adventure" onclick="toggleChip(this)">🧗 Adventure &amp; Outdoors</div>
+          <div class="interest-chip" data-value="food" onclick="toggleChip(this)">🍜 Food &amp; Cuisine</div>
+          <div class="interest-chip" data-value="art" onclick="toggleChip(this)">🎨 Art &amp; Museums</div>
+          <div class="interest-chip" data-value="nature" onclick="toggleChip(this)">🌿 Nature &amp; Wildlife</div>
           <div class="interest-chip" data-value="shopping" onclick="toggleChip(this)">🛍 Shopping</div>
-          <div class="interest-chip" data-value="nightlife" onclick="toggleChip(this)">🌙 Nightlife & Entertainment</div>
-          <div class="interest-chip" data-value="spiritual" onclick="toggleChip(this)">🕌 Spiritual & Temples</div>
+          <div class="interest-chip" data-value="nightlife" onclick="toggleChip(this)">🌙 Nightlife &amp; Entertainment</div>
+          <div class="interest-chip" data-value="spiritual" onclick="toggleChip(this)">🕌 Spiritual &amp; Temples</div>
           <div class="interest-chip" data-value="photography" onclick="toggleChip(this)">📸 Photography</div>
-          <div class="interest-chip" data-value="wellness" onclick="toggleChip(this)">🧘 Wellness & Spa</div>
-          <div class="interest-chip" data-value="beach" onclick="toggleChip(this)">🏖 Beach & Water</div>
+          <div class="interest-chip" data-value="wellness" onclick="toggleChip(this)">🧘 Wellness &amp; Spa</div>
+          <div class="interest-chip" data-value="beach" onclick="toggleChip(this)">🏖 Beach &amp; Water</div>
           <div class="interest-chip" data-value="local" onclick="toggleChip(this)">🏘 Local Experiences</div>
         </div>
-      </div>
+      </section>
 
       <!-- ── Additional Preferences ── -->
-      <div class="form-section">
+      <section class="form-section" aria-label="Additional Preferences">
         <div class="section-label">📝 Additional Preferences</div>
         <div class="form-row">
           <div class="form-group">
-            <label>Pace of Travel</label>
+            <label for="inp-pace">Pace of Travel</label>
             <select id="inp-pace">
               <option value="relaxed">😌 Relaxed (2-3 activities/day)</option>
               <option value="moderate" selected>🚶 Moderate (4-5 activities/day)</option>
@@ -142,7 +193,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Accommodation Type</label>
+            <label for="inp-accommodation">Accommodation Type</label>
             <select id="inp-accommodation">
               <option value="hostel">🛏 Hostel</option>
               <option value="hotel" selected>🏨 Hotel</option>
@@ -153,22 +204,84 @@
           </div>
         </div>
         <div class="form-group full-width" style="margin-bottom:16px">
-          <label>Dietary Restrictions / Food Preferences</label>
+          <label for="inp-dietary">Dietary Restrictions / Food Preferences</label>
           <input type="text" id="inp-dietary" placeholder="e.g. vegetarian, no shellfish, gluten-free">
         </div>
         <div class="form-group full-width">
-          <label>Any Special Requests or Notes?</label>
+          <label for="inp-notes">Any Special Requests or Notes?</label>
           <textarea id="inp-notes" placeholder="e.g. travelling with a toddler, celebrating anniversary, mobility issues, must-see specific monuments..."></textarea>
         </div>
-      </div>
+      </section>
 
       <!-- Generate Button -->
-      <button class="generate-btn" id="btn-generate" onclick="generateItinerary()">
+      <button type="button" class="generate-btn" id="btn-generate" onclick="generateItinerary()">
         ✦ Generate My AI Itinerary
       </button>
 
       <!-- Output Area -->
       <div id="output-area"></div>
+
+      <!-- ── Crawl-able SEO Content Section ── -->
+      <section class="seo-section" aria-labelledby="why-wandrgo">
+        <h2 id="why-wandrgo">Why Use an AI Travel Itinerary Planner?</h2>
+        <p>
+          Planning a multi-day trip manually means juggling dozens of browser tabs for transit routes,
+          attraction timings, visa policies, and fluctuating hotel budgets. The <strong>WandrGo AI travel
+          itinerary planner</strong> brings those pieces together in a single structured workflow. By
+          combining zero-shot prompt engineering with strict place deduplication, WandrGo ensures every
+          day of your trip features distinct attractions, realistic local dining, and transparent
+          estimates in Indian Rupees (INR).
+        </p>
+
+        <div class="seo-grid">
+          <article class="seo-card">
+            <h3>Zero-Duplicate Daily Plans</h3>
+            <p>
+              Unlike generic chat prompts that repeat famous landmarks, WandrGo checks activities across
+              every day so your schedule stays fresh from Day 1 through departure.
+            </p>
+          </article>
+          <article class="seo-card">
+            <h3>Realistic INR Trip Budgeting</h3>
+            <p>
+              Get clear cost breakdowns covering flights, stays, local transit, meals, and entry fees
+              tailored to backpacker, mid-range, or luxury travel styles.
+            </p>
+          </article>
+          <article class="seo-card">
+            <h3>Context-Aware AI Travel Chat</h3>
+            <p>
+              Once your plan is ready, switch to the AI Assistant tab to ask follow-up questions about
+              packing, safety, hidden gems, or budget adjustments for your exact destination.
+            </p>
+          </article>
+        </div>
+
+        <h2>How WandrGo Builds Your Personalized Itinerary</h2>
+        <figure class="article-figure">
+          <img src="/static/images/ai-workflow.webp" alt="WandrGo four-stage AI itinerary planner architecture diagram" width="1200" height="600" loading="lazy">
+          <figcaption>WandrGo transforms trip inputs into deduplicated day-by-day plans and INR budget breakdowns.</figcaption>
+        </figure>
+        <p>
+          Every itinerary begins with your travel constraints: origin, destination, trip duration,
+          group size, dietary preferences, and travel pace. Our FastAPI backend constructs a
+          structured JSON specification and validates each activity and restaurant entry before
+          rendering it cleanly in your browser. Want to dive deeper into prompt design and smart
+          budgeting? Read our step-by-step guide on <a href="/ai-travel-itinerary-planner-guide/" class="inline-link">how to plan a trip with AI</a>, or learn more <a href="/about-us/" class="inline-link">about the WandrGo platform</a>.
+        </p>
+
+        <h3>Frequently Asked Questions</h3>
+        <p>
+          <strong>Is WandrGo free to use?</strong> Yes. WandrGo works with free cloud LLM tiers
+          (Gemini / Groq) as well as local Ollama models so travellers can build unlimited itineraries
+          without subscription paywalls.
+        </p>
+        <p>
+          <strong>Can I customize dietary needs and travel pace?</strong> Yes. You can set vegetarian,
+          vegan, or allergy notes alongside relaxed, moderate, or action-packed daily pacing before
+          generating your itinerary.
+        </p>
+      </section>
 
     </div>
 
@@ -186,21 +299,19 @@
         </div>
       </div>
 
-
-
       <!-- Quick Suggestions -->
       <div class="quick-label">💡 Quick suggestions:</div>
       <div class="quick-row">
-        <button class="quick-btn" onclick="sendQuick(this)">What's the best time to visit?</button>
-        <button class="quick-btn" onclick="sendQuick(this)">How do I get around cheaply?</button>
-        <button class="quick-btn" onclick="sendQuick(this)">Hidden gems to visit?</button>
-        <button class="quick-btn" onclick="sendQuick(this)">Best local street food?</button>
+        <button type="button" class="quick-btn" onclick="sendQuick(this)">What's the best time to visit?</button>
+        <button type="button" class="quick-btn" onclick="sendQuick(this)">How do I get around cheaply?</button>
+        <button type="button" class="quick-btn" onclick="sendQuick(this)">Hidden gems to visit?</button>
+        <button type="button" class="quick-btn" onclick="sendQuick(this)">Best local street food?</button>
       </div>
       <div class="quick-row">
-        <button class="quick-btn" onclick="sendQuick(this)">Safety tips for this destination?</button>
-        <button class="quick-btn" onclick="sendQuick(this)">What should I pack?</button>
-        <button class="quick-btn" onclick="sendQuick(this)">Budget saving tips?</button>
-        <button class="quick-btn" onclick="sendQuick(this)">Day trip recommendations?</button>
+        <button type="button" class="quick-btn" onclick="sendQuick(this)">Safety tips for this destination?</button>
+        <button type="button" class="quick-btn" onclick="sendQuick(this)">What should I pack?</button>
+        <button type="button" class="quick-btn" onclick="sendQuick(this)">Budget saving tips?</button>
+        <button type="button" class="quick-btn" onclick="sendQuick(this)">Day trip recommendations?</button>
       </div>
 
       <!-- Chat Window -->
@@ -212,14 +323,25 @@
       <div class="chat-input-row">
         <input class="chat-input" id="chat-input" type="text" placeholder="Ask anything about your trip…"
                onkeydown="if(event.key==='Enter')sendChat()">
-        <button class="send-btn" id="btn-send" onclick="sendChat()">Send ➤</button>
+        <button type="button" class="send-btn" id="btn-send" onclick="sendChat()">Send ➤</button>
       </div>
     </div>
 
+  </main>
 
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>© 2026 WandrGo AI Travel Itinerary Planner. Built for smarter, budget-aware journeys.</div>
+      <nav class="footer-links" aria-label="Footer Navigation">
+        <a href="/">Home</a>
+        <a href="/about-us/">About Us</a>
+        <a href="/blog/">Blog</a>
+        <a href="/ai-travel-itinerary-planner-guide/">AI Trip Planning Guide</a>
+        <a href="/sitemap.xml">Sitemap</a>
+      </nav>
+    </div>
+  </footer>
 
-  </div>
-
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js" defer></script>
 </body>
 </html>

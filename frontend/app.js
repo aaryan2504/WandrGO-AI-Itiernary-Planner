@@ -201,7 +201,10 @@ async function generateItinerary() {
     outputArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
-
+  // GA4 Custom Event Tracking
+if (typeof gtag === 'function') {
+    gtag('event', 'generate_itinerary');
+}
   // Show loading with live elapsed seconds timer
   btn.disabled = true;
   btn.textContent = '⏳ Generating Itinerary...';
